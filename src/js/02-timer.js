@@ -1,13 +1,11 @@
 import flatpickr from "flatpickr";
 import Notiflix from 'notiflix';
-// Дополнительный импорт стилей
 import "flatpickr/dist/flatpickr.min.css";
 
 
 
 const refs = {
     btnStart: document.querySelector('[data-start]'),
-    
     days: document.querySelector('[data-days]'),
     hours: document.querySelector('[data-hours]'),
     mins: document.querySelector('[data-minutes]'),
@@ -19,25 +17,18 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-
   onClose(selectedDates) {
     console.log(selectedDates[0]);
-   
     timer.onSelectDate(selectedDates[0]);
   },
-  
     // minDate: "today",
     altInput: true,
     altFormat: "F j, Y",
     dateFormat: "Y-m-d",
-  
 };
 
-
 flatpickr("input#datetime-picker", options);
-
 // console.log(options);
-
 
 class Timer {
 
@@ -46,9 +37,9 @@ class Timer {
       this.isActive = false;
       this.selectedUserDate = Date.now();
       this.onTick = onTick;
-      refs.btnStart.disabled = true;
-     
-  }  
+      refs.btnStart.disabled = true; 
+  } 
+  
    onSelectDate(date) {
       this.getValidDate(date);
       console.log(date.getTime());
@@ -56,8 +47,7 @@ class Timer {
     
    getValidDate(date) {
         this.selectedUserDate = date.getTime();
-  
-     if (this.selectedUserDate < Date.now()) {
+       if (this.selectedUserDate < Date.now()) {
         console.log("Please choose a date in the future");
         // window.alert("Please choose a date in the future");
       Notiflix.Notify.failure("Please choose a date in the future");
@@ -85,33 +75,32 @@ class Timer {
          if (deltaTime <= 1000) {  //==========change
             clearInterval(this.timerId)
         }  
-            const timeComponents = this.convertMs(deltaTime);
+        const timeComponents = this.convertMs(deltaTime);
         this.onTick(timeComponents);
       }, 1000);  
-   
   }
 
    convertMs(ms) {
-        // Number of milliseconds per unit of time
-        const second = 1000;
-        const minute = second * 60;
-        const hour = minute * 60;
-        const day = hour * 24;
+      // Number of milliseconds per unit of time
+      const second = 1000;
+      const minute = second * 60;
+      const hour = minute * 60;
+      const day = hour * 24;
 
-        // Remaining days
-        const days = this.addLeadingZero(Math.floor(ms / day));
-        // Remaining hours
-        const hours = this.addLeadingZero(Math.floor((ms % day) / hour));
-        // Remaining minutes
-        const minutes = this.addLeadingZero(Math.floor(((ms % day) % hour) / minute));
-        // Remaining seconds
-        const seconds = this.addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
+      // Remaining days
+      const days = this.addLeadingZero(Math.floor(ms / day));
+      // Remaining hours
+      const hours = this.addLeadingZero(Math.floor((ms % day) / hour));
+      // Remaining minutes
+      const minutes = this.addLeadingZero(Math.floor(((ms % day) % hour) / minute));
+      // Remaining seconds
+      const seconds = this.addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
 
-        return { days, hours, minutes, seconds };
+      return { days, hours, minutes, seconds };
   }
 
    addLeadingZero(value){
-        return String(value).padStart(2,'0')
+      return String(value).padStart(2,'0')
   }; 
     
 }
