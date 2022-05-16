@@ -1,5 +1,5 @@
 import flatpickr from "flatpickr";
-import Notiflix from 'notiflix';
+import { Report } from 'notiflix/build/notiflix-report-aio';;
 import "flatpickr/dist/flatpickr.min.css";
 
 
@@ -19,7 +19,7 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log(selectedDates[0]);
-    timer.onSelectDate(selectedDates[0]);
+    timer.getValidDate(selectedDates[0]);
   },
     // minDate: "today",
     altInput: true,
@@ -39,18 +39,13 @@ class Timer {
       this.onTick = onTick;
       refs.btnStart.disabled = true; 
   } 
-  
-   onSelectDate(date) {
-      this.getValidDate(date);
-      console.log(date.getTime());
-  }
-    
+      
    getValidDate(date) {
         this.selectedUserDate = date.getTime();
        if (this.selectedUserDate < Date.now()) {
         console.log("Please choose a date in the future");
-        // window.alert("Please choose a date in the future");
-      Notiflix.Notify.failure("Please choose a date in the future");
+        
+        Report.warning('Warning',"Please choose a date in the future");
         refs.btnStart.disabled = true;
       return
     }
